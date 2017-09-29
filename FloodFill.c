@@ -1,51 +1,55 @@
 #include<stdio.h>
+#include<unistd.h>
 
-int R,C;
+int R=11,C=25;
+char matFill[11][25];
 
-void print(char mat[][50]){
-	for(int i=0;i<R;i++){
-		for(int j=0;j<C;j++){
-			printf("%c",mat[i][j]);
-		}
-		printf("\n");
-	}
-	printf("\n");
-}
-
-//Recursion - DFS
-void floodFill(char mat[][50],int i,int j,char ch,char color){
-	if(i<0||j<0||i>=R||j>=C||mat[i][j]!=ch){
+//FloodFill using DFS(recursion)
+void FloodFill(int i,int j,char c,char r){		//i: row number, j:col number to start filling in..and r is char to replace with
+	if(i<0||j<0||i>=R+R||j>=C+R|| matFill[i][j]!=c){
 		return;
 	}
-
-	mat[i][j] = color;
-	print(mat);
-
-	//Call to fill the color on neighbouring cells
-	floodFill(mat,i+1,j,ch,color);
-	floodFill(mat,i,j+1,ch,color);
-	floodFill(mat,i-1,j,ch,color);
-	floodFill(mat,i,j-1,ch,color);
-
+	else{
+		matFill[i][j]=r;
+		//sleep(1);
+		/*for(int i=0;i<R;i++){					//You can uncomment this to have a look that how flood fill works
+		  for(int j=0;j<C;j++){
+		  printf("%c",matFill[i][j]);
+		  }
+		  }
+		  printf("\n");*/
+		FloodFill(i+1,j,c,r);
+		FloodFill(i,j+1,c,r);
+		FloodFill(i-1,j,c,r);
+		FloodFill(i,j-1,c,r);
+	}
 }
 
+//Driver Code
+void main(){
 
-int main(){
-	char mat[50][50];
-	scanf("%d %d",R,C);
-
-
+	//char *mat;
+	//mat=&matFill[0][0];
 	for(int i=0;i<R;i++){
 		for(int j=0;j<C;j++){
-			scanf("%c",mat[i][j]);
+			scanf("%c",&matFill[i][j]);
 		}
 	}
 
-	print(mat);
+	for(int i=0;i<R;i++){
+		for(int j=0;j<C;j++){
+			printf("%c",matFill[i][j]);
+		}
+	}
+	printf("\n");
 
-	floodFill(mat,8,13,'.','R');
-
-	print(mat);
-	
-
+	//print(mat);
+	FloodFill(5,8,'.','R');
+	//print(mat);
+	for(int i=0;i<R;i++){
+		for(int j=0;j<C;j++){
+			printf("%c",matFill[i][j]);
+		}
+	}
+	printf("\n");
 }
